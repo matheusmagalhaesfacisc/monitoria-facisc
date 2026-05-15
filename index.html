@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoria de Qualidade · FACISC</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Fira+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde:        #3DBD2B;
+  --verde-dark:   #1C4820;
+  --verde-mid:    #2D7A1F;
+  --verde-light:  #D6F5C8;
+  --verde-pale:   #EDF9E8;
+  --amarelo:      #E8D600;
+  --amarelo-bg:   #FEFBD0;
+  --laranja:      #FF6B2B;
+  --laranja-bg:   #FFF0E8;
+  --vermelho:     #D32F2F;
+  --vermelho-bg:  #FDECEA;
+  --cinza-bg:     #F2F4F0;
+  --cinza-borda:  #D8E0D0;
+  --texto:        #1C2A18;
+  --subtexto:     #4A6040;
+  --branco:       #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Fira Sans', sans-serif;
+  background: var(--cinza-bg);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--verde-dark);
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 3px 16px rgba(28,72,32,.4);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-svg {
+  height: 38px;
+  width: auto;
+}
+
+.header-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,.25);
+}
+
+.header-title {
+  color: var(--branco);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.1;
+}
+
+.header-sub {
+  color: var(--verde);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge-update {
+  background: rgba(61,189,43,.15);
+  border: 1px solid rgba(61,189,43,.3);
+  color: var(--verde);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* ── NAV TABS (inside header) ── */
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding: 0;
+}
+
+.nav-tab {
+  color: rgba(255,255,255,.55);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+
+.nav-tab:hover { color: rgba(255,255,255,.85); }
+.nav-tab.active {
+  color: var(--verde);
+  border-bottom-color: var(--verde);
+}
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+main { max-width: 1400px; margin: 0 auto; padding: 28px 24px 60px; }
+
+/* Centralize filters and KPI section */
+.center-block {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--subtexto);
+  margin-bottom: 12px;
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cinza-borda);
+}
+.section-title:first-child { margin-top: 0; }
+
+/* ── FILTERS ── */
+.filters-bar {
+  background: var(--branco);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 14px;
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--subtexto);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+
+select {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 13px;
+  padding: 7px 12px;
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 8px;
+  background: var(--cinza-bg);
+  color: var(--texto);
+  cursor: pointer;
+  outline: none;
+  transition: border .2s;
+}
+select:focus { border-color: var(--verde-mid); }
+
+.btn-reset {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--subtexto);
+  background: transparent;
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 8px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-reset:hover { border-color: var(--vermelho); color: var(--vermelho); }
+
+/* ── KPI GRID ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--branco);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 14px;
+  padding: 18px 18px 14px;
+  position: relative;
+  overflow: hidden;
+  transition: transform .18s, box-shadow .18s;
+}
+.kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,72,32,.1); }
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  border-radius: 14px 14px 0 0;
+  background: var(--verde);
+}
+.kpi-card.amarelo::before { background: var(--amarelo); }
+.kpi-card.laranja::before { background: var(--laranja); }
+.kpi-card.vermelho::before { background: var(--vermelho); }
+.kpi-card.dark::before { background: var(--verde-dark); }
+
+.kpi-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--subtexto);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: 8px;
+}
+
+.kpi-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--texto);
+  line-height: 1;
+}
+.kpi-value.verde   { color: var(--verde-mid); }
+.kpi-value.amarelo { color: #9A8A00; }
+.kpi-value.laranja { color: var(--laranja); }
+.kpi-value.vermelho{ color: var(--vermelho); }
+
+.kpi-sub { font-size: 11px; color: var(--subtexto); margin-top: 5px; }
+
+/* ── TWO COL GRID ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 28px; }
+
+/* ── CARD GENERIC ── */
+.card {
+  background: var(--branco);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.card-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--cinza-borda);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--texto);
+}
+
+.card-body { padding: 18px 20px; }
+
+/* ── CHART BAR ── */
+.chart-bars { display: flex; flex-direction: column; gap: 10px; }
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto);
+  width: 110px;
+  text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-track {
+  flex: 1;
+  background: var(--cinza-bg);
+  height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--branco);
+  min-width: 40px;
+  transition: width .6s ease;
+}
+
+.bar-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  width: 52px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── MINI BAR ── */
+.mini-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mini-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-label {
+  font-size: 11px;
+  color: var(--subtexto);
+  flex: 1;
+  line-height: 1.3;
+}
+
+.mini-track {
+  width: 100px;
+  background: var(--cinza-bg);
+  height: 6px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mini-fill { height: 100%; border-radius: 6px; }
+
+.mini-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  width: 44px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── MES CHART ── */
+.mes-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 120px;
+  padding: 10px 0 0;
+}
+
+.mes-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.mes-bar-wrap {
+  width: 100%;
+  background: var(--cinza-bg);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: flex-end;
+  height: 80px;
+  position: relative;
+}
+
+.mes-bar-fill {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height .5s ease;
+  position: relative;
+}
+
+.mes-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.mes-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--subtexto);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── PRODUCT BADGES ── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.product-card {
+  background: var(--cinza-bg);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.product-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--verde-dark);
+  letter-spacing: .04em;
+}
+
+.product-pct {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  margin: 4px 0 2px;
+}
+
+.product-count { font-size: 10px; color: var(--subtexto); }
+
+/* ── ETAPA DESVIO TABLE ── */
+.etapa-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+
+.etapa-table thead th {
+  background: var(--cinza-bg);
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--subtexto);
+  border-bottom: 1.5px solid var(--cinza-borda);
+}
+
+.etapa-table tbody tr {
+  border-bottom: 1px solid var(--cinza-borda);
+  transition: background .12s;
+}
+.etapa-table tbody tr:hover { background: var(--verde-pale); }
+.etapa-table tbody tr:last-child { border-bottom: none; }
+
+.etapa-table td { padding: 8px 12px; }
+
+.pct-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.pct-badge.ok       { background: var(--verde-light); color: var(--verde-mid); }
+.pct-badge.parcial  { background: var(--amarelo-bg);  color: #7A7000; }
+.pct-badge.baixo    { background: var(--vermelho-bg); color: var(--vermelho); }
+
+.desvio-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--vermelho);
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+/* ── AGENT CARDS ── */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.agent-card {
+  background: var(--branco);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform .18s, box-shadow .18s;
+}
+.agent-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(28,72,32,.1); }
+
+.agent-header-bg {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--verde-dark);
+}
+.agent-header-bg.verde   { background: var(--verde-mid); }
+.agent-header-bg.amarelo { background: #7A7000; }
+.agent-header-bg.laranja { background: #C04A10; }
+.agent-header-bg.vermelho{ background: var(--vermelho); }
+
+.agent-av {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px; font-weight: 800; color: var(--branco);
+  flex-shrink: 0;
+}
+
+.agent-name-wrap { flex: 1; padding-left: 12px; }
+
+.agent-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--branco); line-height: 1;
+}
+
+.agent-meta { font-size: 11px; color: rgba(255,255,255,.7); margin-top: 2px; }
+
+.agent-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px; font-weight: 800;
+  color: var(--branco);
+  background: rgba(255,255,255,.15);
+  border-radius: 10px;
+  padding: 4px 12px;
+  line-height: 1;
+}
+
+.agent-body { padding: 16px 20px; }
+
+.etapa-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--subtexto);
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--cinza-borda);
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+.etapa-section-label:first-child { margin-top: 0; }
+
+.etapa-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.etapa-nome {
+  font-size: 11.5px;
+  color: var(--subtexto);
+  flex: 1;
+  line-height: 1.3;
+}
+
+.etapa-track {
+  width: 80px;
+  background: var(--cinza-borda);
+  height: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.etapa-fill { height: 100%; border-radius: 5px; }
+
+.etapa-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  width: 50px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.tag-desvio {
+  display: inline-flex;
+  align-items: center;
+  background: var(--vermelho-bg);
+  color: var(--vermelho);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.tag-alerta {
+  display: inline-flex;
+  align-items: center;
+  background: var(--amarelo-bg);
+  color: #7A7000;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+/* ── DETAIL TABLE ── */
+.table-wrap {
+  background: var(--branco);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.table-head-bar {
+  padding: 14px 20px;
+  border-bottom: 1.5px solid var(--cinza-borda);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--verde-dark);
+}
+
+.table-head-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--branco);
+}
+
+.table-count-badge {
+  background: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.8);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.table-scroll { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+
+thead th {
+  background: var(--cinza-bg);
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--subtexto);
+  white-space: nowrap;
+  border-bottom: 1.5px solid var(--cinza-borda);
+  position: sticky;
+  top: 0;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--cinza-borda);
+  transition: background .12s;
+}
+tbody tr:hover { background: var(--verde-pale); }
+tbody tr:last-child { border-bottom: none; }
+
+td { padding: 8px 12px; white-space: nowrap; color: var(--texto); }
+
+.canal-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: rgba(61,189,43,.12);
+  color: var(--verde-mid);
+}
+
+.desvio-cell { font-size: 10px; color: var(--vermelho); font-weight: 600; }
+
+/* ── LEGEND ── */
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+}
+
+.legend-item {
+  background: var(--branco);
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--branco);
+  background: var(--verde-dark);
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.legend-info { flex: 1; }
+.legend-grupo { font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--subtexto); letter-spacing: .05em; }
+.legend-nome  { font-size: 12px; font-weight: 500; color: var(--texto); }
+.legend-pts   { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 700; color: var(--verde-mid); flex-shrink: 0; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  color: var(--subtexto);
+  border-top: 1px solid var(--cinza-borda);
+  margin-top: 20px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  header { padding: 0 16px; }
+  main { padding: 16px 14px 48px; }
+  .nav-tabs { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+  <div class="logo-wrap">
+    <svg class="logo-svg" viewBox="0 0 210 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Letras FACISC em bold condensado branco -->
+      <text x="0" y="37" font-family="Impact, 'Arial Narrow', sans-serif" font-weight="900" font-size="40" fill="white" letter-spacing="1">FACISC</text>
+      <!-- Símbolo: 3 pás giratórias (estilo câmera/turbina) + núcleo amarelo -->
+      <!-- Pá 1 (verde escuro, topo-direita) -->
+      <path d="M192 10 C200 10 207 16 207 24 C207 24 200 20 192 22 C188 17 188 10 192 10Z" fill="#2D9A1A"/>
+      <!-- Pá 2 (verde médio, baixo-direita) -->
+      <path d="M207 26 C207 34 201 40 193 40 C193 40 195 32 191 26 C197 23 207 24 207 26Z" fill="#3DBD2B"/>
+      <!-- Pá 3 (verde claro, esquerda) -->
+      <path d="M189 40 C182 40 176 34 176 26 C176 26 183 29 189 26 C193 31 192 40 189 40Z" fill="#5ED44A"/>
+      <!-- Núcleo central amarelo -->
+      <circle cx="191" cy="25" r="7" fill="#E8D600"/>
+      <!-- Brilho no núcleo -->
+      <circle cx="189" cy="23" r="2.5" fill="white" opacity="0.45"/>
+    </svg>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Monitoria de Qualidade</div>
+      <div class="header-sub">Central de Atendimento · 2026</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="badge-update" id="lastUpdate">—</div>
+  </div>
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('resumo')">📊 Visão Geral</div>
+    <div class="nav-tab" onclick="showPage('detalhado')">👥 Por Atendente</div>
+  </div>
+</header>
+
+<!-- ═══════════════════ PAGE 1 — VISÃO GERAL ═══════════════════ -->
+<div class="page active" id="page-resumo">
+<main>
+
+  <!-- FILTROS + KPIs centrados -->
+  <div class="center-block">
+    <div class="filters-bar">
+      <div class="filter-group">
+        <span class="filter-label">Mês</span>
+        <select id="r-filtroMes" onchange="renderResumo()">
+          <option value="">Todos os meses</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Produto</span>
+        <select id="r-filtroProduto" onchange="renderResumo()">
+          <option value="">Todos</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Canal</span>
+        <select id="r-filtroCanal" onchange="renderResumo()">
+          <option value="">Todos</option>
+        </select>
+      </div>
+      <button class="btn-reset" onclick="resetFiltros('resumo')">↺ Limpar</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="section-title">Indicadores Gerais</div>
+    <div class="kpi-grid" id="r-kpis"></div>
+  </div>
+
+  <!-- TENDÊNCIA MENSAL + PRODUTOS -->
+  <div class="section-title">Evolução Mensal e Resultados por Produto</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Nota Média por Mês</span>
+      </div>
+      <div class="card-body">
+        <div class="mes-chart" id="r-mesList"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Resultado por Produto</span>
+      </div>
+      <div class="card-body">
+        <div class="product-grid" id="r-produtos"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELATÓRIO POR ETAPA + POR ATENDENTE -->
+  <div class="section-title">Relatório por Etapa e por Atendente</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Média por Etapa (vs. Máximo)</span>
+        <span style="font-size:11px;color:var(--subtexto)">Sinalizando desvios</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-bars" id="r-etapas"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Média por Atendente</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-bars" id="r-atendentes"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMO DESVIOS POR ETAPA -->
+  <div class="section-title">Tabela Resumo — Aproveitamento por Etapa</div>
+  <div class="table-wrap">
+    <div class="table-head-bar">
+      <span class="table-head-title">Etapas com maior índice de desvio</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Etapa</th>
+            <th>Grupo</th>
+            <th>Pontuação Máx.</th>
+            <th>Média obtida</th>
+            <th>% Aproveitamento</th>
+            <th>Atend. com desvio</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="r-etapaTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LEGENDA -->
+  <div class="section-title">Referência — Pontuação por Etapa</div>
+  <div class="legend-grid" id="r-legenda"></div>
+
+</main>
+</div>
+
+<!-- ═══════════════════ PAGE 2 — POR ATENDENTE ═══════════════════ -->
+<div class="page" id="page-detalhado">
+<main>
+
+  <!-- FILTROS -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <span class="filter-label">Atendente</span>
+      <select id="d-filtroAtend" onchange="renderDetalhado()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Mês</span>
+      <select id="d-filtroMes" onchange="renderDetalhado()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Produto</span>
+      <select id="d-filtroProduto" onchange="renderDetalhado()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetFiltros('detalhado')">↺ Limpar</button>
+  </div>
+
+  <div class="section-title">Perfil Detalhado por Atendente</div>
+  <div class="agent-grid" id="d-agentCards"></div>
+
+</main>
+</div>
+
+<footer>Dashboard provisório · FACISC Monitoria de Qualidade · Dados extraídos da planilha de controle interno · facisc.org.br</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// DADOS
+// ════════════════════════════════════════════════════════════
+const DADOS = [
+  {id:1,nome:"Ilézio Filho",produto:"BEE",canal:"CHAT",saudacao:10,comunicacao:10,empatia:0,conhecimento:0,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:60.0,dataMonit:"24/03/2026"},
+  {id:2,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"24/03/2026"},
+  {id:3,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:3,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:68.0,dataMonit:"24/03/2026"},
+  {id:4,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"24/03/2026"},
+  {id:5,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:65.0,dataMonit:"24/03/2026"},
+  {id:6,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:0,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:55.0,dataMonit:"24/03/2026"},
+  {id:7,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:10,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:50.0,dataMonit:"24/03/2026"},
+  {id:8,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:0,tempo:0,transferencia:15,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:50.0,dataMonit:"24/03/2026"},
+  {id:9,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:0,tempo:0,transferencia:15,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:50.0,dataMonit:"24/03/2026"},
+  {id:10,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:65.0,dataMonit:"24/03/2026"},
+  {id:11,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"24/03/2026"},
+  {id:12,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:60.0,dataMonit:"24/03/2026"},
+  {id:13,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"24/03/2026"},
+  {id:14,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"24/03/2026"},
+  {id:15,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"24/03/2026"},
+  {id:16,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:0,comunicacao:0,empatia:0,conhecimento:0,tempo:0,transferencia:0,resumo:0,confirmacao:0,registro:0,encerramento:0,pct:0.0,dataMonit:"24/03/2026"},
+  {id:17,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:3,conhecimento:0,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:48.0,dataMonit:"24/03/2026"},
+  {id:18,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"24/03/2026"},
+  {id:19,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:65.0,dataMonit:"19/03/2026"},
+  {id:20,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"18/03/2026"},
+  {id:21,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"18/03/2026"},
+  {id:22,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:10,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"18/03/2026"},
+  {id:23,nome:"Rafaela Lemos",produto:"BEE",canal:"CHAT E TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"07/04/2026"},
+  {id:24,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"07/04/2026"},
+  {id:25,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"07/04/2026"},
+  {id:26,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"07/04/2026"},
+  {id:27,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"07/04/2026"},
+  {id:28,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:0,pct:85.0,dataMonit:"07/04/2026"},
+  {id:29,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:60.0,dataMonit:"07/04/2026"},
+  {id:30,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:60.0,dataMonit:"07/04/2026"},
+  {id:31,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"07/04/2026"},
+  {id:32,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"01/04/2026"},
+  {id:33,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:90.0,dataMonit:"01/04/2026"},
+  {id:34,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"01/04/2026"},
+  {id:35,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"01/04/2026"},
+  {id:36,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"01/04/2026"},
+  {id:37,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:90.0,dataMonit:"01/04/2026"},
+  {id:38,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:5,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"01/04/2026"},
+  {id:39,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"31/03/2026"},
+  {id:40,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"31/03/2026"},
+  {id:41,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"31/03/2026"},
+  {id:42,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"31/03/2026"},
+  {id:43,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"31/03/2026"},
+  {id:44,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"31/03/2026"},
+  {id:45,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:5,empatia:0,conhecimento:10,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:45.0,dataMonit:"31/03/2026"},
+  {id:46,nome:"Rafaela Lemos",produto:"BEE",canal:"TICKET",saudacao:0,comunicacao:0,empatia:0,conhecimento:0,tempo:5,transferencia:0,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:20.0,dataMonit:"31/03/2026"},
+  {id:47,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:90.0,dataMonit:"08/04/2026"},
+  {id:48,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:90.0,dataMonit:"08/04/2026"},
+  {id:49,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:90.0,dataMonit:"08/04/2026"},
+  {id:50,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"08/04/2026"},
+  {id:51,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"08/04/2026"},
+  {id:52,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"08/04/2026"},
+  {id:53,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:65.0,dataMonit:"08/04/2026"},
+  {id:54,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:0,comunicacao:0,empatia:0,conhecimento:0,tempo:15,transferencia:0,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:30.0,dataMonit:"08/04/2026"},
+  {id:55,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"08/04/2026"},
+  {id:56,nome:"Graziela",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:5,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:65.0,dataMonit:"08/04/2026"},
+  {id:57,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"30/04/2026"},
+  {id:58,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"30/04/2026"},
+  {id:59,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"30/04/2026"},
+  {id:60,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"30/04/2026"},
+  {id:61,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"30/04/2026"},
+  {id:62,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"30/04/2026"},
+  {id:63,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:65.0,dataMonit:"30/04/2026"},
+  {id:64,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"30/04/2026"},
+  {id:65,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"30/04/2026"},
+  {id:66,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"30/04/2026"},
+  {id:67,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:68,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:69,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"29/04/2026"},
+  {id:70,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"29/04/2026"},
+  {id:71,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"29/04/2026"},
+  {id:72,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:0,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"29/04/2026"},
+  {id:73,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:74,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:75,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"29/04/2026"},
+  {id:76,nome:"Ilézio Filho",produto:"BEE",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:77,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"29/04/2026"},
+  {id:78,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"29/04/2026"},
+  {id:79,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"29/04/2026"},
+  {id:80,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"29/04/2026"},
+  {id:81,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"29/04/2026"},
+  {id:82,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"29/04/2026"},
+  {id:83,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:75.0,dataMonit:"28/04/2026"},
+  {id:84,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:0,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:70.0,dataMonit:"28/04/2026"},
+  {id:85,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:0,resumo:5,confirmacao:5,registro:15,encerramento:5,pct:85.0,dataMonit:"28/04/2026"},
+  {id:86,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"28/04/2026"},
+  {id:87,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"28/04/2026"},
+  {id:88,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"28/04/2026"},
+  {id:89,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"28/04/2026"},
+  {id:90,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"28/04/2026"},
+  {id:91,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"28/04/2026"},
+  {id:92,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"28/04/2026"},
+  {id:93,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"28/04/2026"},
+  {id:94,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"28/04/2026"},
+  {id:95,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"28/04/2026"},
+  {id:96,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"28/04/2026"},
+  {id:97,nome:"Jonathan",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"28/04/2026"},
+  {id:98,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:99,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"29/04/2026"},
+  {id:100,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"29/04/2026"},
+  {id:101,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:102,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:103,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"29/04/2026"},
+  {id:104,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"29/04/2026"},
+  {id:105,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"29/04/2026"},
+  {id:106,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:107,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:108,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:109,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:110,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"29/04/2026"},
+  {id:111,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:112,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:113,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"29/04/2026"},
+  {id:114,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"29/04/2026"},
+  {id:115,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"29/04/2026"},
+  {id:116,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"29/04/2026"},
+  {id:117,nome:"Weendy",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"29/04/2026"},
+  {id:118,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"04/05/2026"},
+  {id:119,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"04/05/2026"},
+  {id:120,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:121,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"04/05/2026"},
+  {id:122,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"04/05/2026"},
+  {id:123,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"04/05/2026"},
+  {id:124,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"04/05/2026"},
+  {id:125,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"04/05/2026"},
+  {id:126,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"04/05/2026"},
+  {id:127,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"04/05/2026"},
+  {id:128,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"04/05/2026"},
+  {id:129,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"04/05/2026"},
+  {id:130,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"04/05/2026"},
+  {id:131,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:132,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"04/05/2026"},
+  {id:133,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:134,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:135,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:136,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:137,nome:"Daniella Nunes",produto:"UTIL",canal:"TICKET",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"04/05/2026"},
+  {id:138,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:139,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"11/05/2026"},
+  {id:140,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:141,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:142,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"11/05/2026"},
+  {id:143,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:144,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:145,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:146,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:147,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"11/05/2026"},
+  {id:148,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:149,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:0,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:80.0,dataMonit:"11/05/2026"},
+  {id:150,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:0,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:151,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:0,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"11/05/2026"},
+  {id:152,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:65.0,dataMonit:"11/05/2026"},
+  {id:153,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:154,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:155,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:0,pct:70.0,dataMonit:"11/05/2026"},
+  {id:156,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"08/05/2026"},
+  {id:157,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:0,pct:90.0,dataMonit:"05/05/2026"},
+  {id:158,nome:"Rafaela Lemos",produto:"BEE",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:0,pct:90.0,dataMonit:"05/05/2026"},
+  {id:159,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:70.0,dataMonit:"11/05/2026"},
+  {id:160,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:161,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:162,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:163,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:164,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:165,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:166,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"11/05/2026"},
+  {id:167,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:70.0,dataMonit:"11/05/2026"},
+  {id:168,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:169,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:0,pct:95.0,dataMonit:"11/05/2026"},
+  {id:170,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"11/05/2026"},
+  {id:171,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:172,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:80.0,dataMonit:"11/05/2026"},
+  {id:173,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:174,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:175,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:65.0,dataMonit:"11/05/2026"},
+  {id:176,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:80.0,dataMonit:"11/05/2026"},
+  {id:177,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:178,nome:"Taynara De Lima",produto:"EQUIFAX",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:179,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:180,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:181,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:182,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:183,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:184,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:185,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:186,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:187,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:188,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:189,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:190,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:191,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:192,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:193,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:194,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:10,registro:15,encerramento:5,pct:95.0,dataMonit:"11/05/2026"},
+  {id:195,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:196,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:197,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"11/05/2026"},
+  {id:198,nome:"Marlon Bezerra",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"11/05/2026"},
+  {id:199,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"13/05/2026"},
+  {id:200,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"13/05/2026"},
+  {id:201,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"13/05/2026"},
+  {id:202,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"13/05/2026"},
+  {id:203,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:204,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:0,pct:95.0,dataMonit:"13/05/2026"},
+  {id:205,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"13/05/2026"},
+  {id:206,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:207,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:208,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"12/05/2026"},
+  {id:209,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:210,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:211,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:212,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:213,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:75.0,dataMonit:"12/05/2026"},
+  {id:214,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:215,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:216,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"12/05/2026"},
+  {id:217,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:218,nome:"Julio Lorentino",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"12/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:0,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:0,pct:95.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:0,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:70.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:0,pct:80.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:0,confirmacao:0,registro:15,encerramento:5,pct:85.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:10,registro:15,encerramento:5,pct:100.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:5,pct:90.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"13/05/2026"},
+  {id:220,nome:"Natalia Noronha",produto:"CERTIFICADO DE ORIGEM",canal:"TELEFONE",saudacao:10,comunicacao:10,empatia:5,conhecimento:20,tempo:15,transferencia:5,resumo:5,confirmacao:0,registro:15,encerramento:0,pct:85.0,dataMonit:"13/05/2026"},
+];
+
+// Extrair mês da data dd/mm/yyyy
+function getMes(d) {
+  const p = d.split('/');
+  return p[1]+'/'+p[2]; // MM/YYYY
+}
+function getMesLabel(d) {
+  const meses = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const p = d.split('/');
+  return meses[parseInt(p[1])] + '/' + p[2].slice(2);
+}
+
+// Enriquecer dados com mês
+DADOS.forEach(d => { d.mes = getMes(d.dataMonit); d.mesLabel = getMesLabel(d.dataMonit); });
+
+// Etapas definição
+const ETAPAS = [
+  {key:'saudacao',   nome:'Saudação Adequada',         grupo:'Inicialização e Abertura', max:10},
+  {key:'comunicacao',nome:'Comunicação Clara',          grupo:'Condução e Solução',       max:10},
+  {key:'empatia',    nome:'Empatia / Cortesia',         grupo:'Condução e Solução',       max:5},
+  {key:'conhecimento',nome:'Conhecimento Técnico',      grupo:'Condução e Solução',       max:20},
+  {key:'tempo',      nome:'Tempo de Resposta',          grupo:'Condução e Solução',       max:15},
+  {key:'transferencia',nome:'Transferência',            grupo:'Condução e Solução',       max:5},
+  {key:'resumo',     nome:'Resumo da Solução',          grupo:'Processo e Conclusão',     max:5},
+  {key:'confirmacao',nome:'Confirmação',                grupo:'Processo e Conclusão',     max:10},
+  {key:'registro',   nome:'Registro',                   grupo:'Processo e Conclusão',     max:15},
+  {key:'encerramento',nome:'Encerramento',              grupo:'Processo e Conclusão',     max:5},
+];
+
+// ── UTILS ──────────────────────────────────────
+function initials(n){ return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+
+function pctCls(p){ return p>=85?'ok':p>=60?'parcial':'baixo'; }
+function pctColor(p){ return p>=85?'var(--verde-mid)':p>=60?'#9A8A00':'var(--vermelho)'; }
+function barColor(p){ return p>=85?'var(--verde-mid)':p>=60?'#B5A000':'var(--vermelho)'; }
+
+function agentCls(p){ return p>=85?'verde':p>=60?'amarelo':p>=40?'laranja':'vermelho'; }
+
+function filteredData(prefix) {
+  const selMes   = document.getElementById(prefix+'-filtroMes');
+  const selProd  = document.getElementById(prefix+'-filtroProduto');
+  const selCanal = document.getElementById(prefix+'-filtroCanal');
+  const selAtend = document.getElementById(prefix+'-filtroAtend');
+
+  const mes   = selMes   ? selMes.value   : '';
+  const prod  = selProd  ? selProd.value  : '';
+  const canal = selCanal ? selCanal.value : '';
+  const atend = selAtend ? selAtend.value : '';
+
+  return DADOS.filter(d =>
+    (!mes   || d.mes === mes) &&
+    (!prod  || d.produto.toLowerCase() === prod.toLowerCase()) &&
+    (!canal || d.canal.toLowerCase() === canal.toLowerCase()) &&
+    (!atend || d.nome.toLowerCase() === atend.toLowerCase())
+  );
+}
+
+// ── POPULATE SELECTS ──────────────────────────
+function populateSelects() {
+  const meses    = [...new Set(DADOS.map(d=>d.mes))].sort();
+  const produtos = [...new Set(DADOS.map(d=>d.produto))].sort();
+  const canais   = [...new Set(DADOS.map(d=>d.canal))].sort();
+  const nomes    = [...new Set(DADOS.map(d=>d.nome))].sort();
+
+  const mesLabels = {};
+  DADOS.forEach(d => mesLabels[d.mes] = d.mesLabel);
+
+  function fillSel(id, arr, labelMap) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    arr.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = labelMap ? labelMap[v] : v;
+      el.appendChild(o);
+    });
+  }
+
+  fillSel('r-filtroMes',   meses, mesLabels);
+  fillSel('r-filtroProduto', produtos, null);
+  fillSel('r-filtroCanal', canais, null);
+
+  fillSel('d-filtroAtend', nomes, null);
+  fillSel('d-filtroMes',   meses, mesLabels);
+  fillSel('d-filtroProduto', produtos, null);
+
+}
+
+function resetFiltros(page) {
+  if (page === 'resumo') {
+    ['r-filtroMes','r-filtroProduto','r-filtroCanal'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    renderResumo();
+  } else if (page === 'detalhado') {
+    ['d-filtroAtend','d-filtroMes','d-filtroProduto'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    renderDetalhado();
+  }
+}
+
+// ── RENDER RESUMO ──────────────────────────────
+function renderResumo() {
+  const data = filteredData('r');
+
+  // KPIs
+  const total  = data.length;
+  const media  = total ? (data.reduce((s,d)=>s+d.pct,0)/total) : 0;
+  const altos  = data.filter(d=>d.pct>=85).length;
+  const baixos = data.filter(d=>d.pct<60).length;
+  const atend  = new Set(data.map(d=>d.nome)).size;
+  const perfeitos = data.filter(d=>d.pct>=90).length;
+
+  document.getElementById('r-kpis').innerHTML = `
+    <div class="kpi-card dark"><div class="kpi-label">Atendimentos</div><div class="kpi-value">${total}</div><div class="kpi-sub">registros selecionados</div></div>
+    <div class="kpi-card verde"><div class="kpi-label">Média Geral</div><div class="kpi-value verde">${media.toFixed(1)}%</div><div class="kpi-sub">meta: 85% · nota média de qualidade</div></div>
+    <div class="kpi-card verde"><div class="kpi-label">≥ 85% — Dentro da Meta</div><div class="kpi-value verde">${altos}</div><div class="kpi-sub">${total?((altos/total)*100).toFixed(0):0}% dos atendimentos</div></div>
+    <div class="kpi-card amarelo"><div class="kpi-label">≥ 90% — Excelência</div><div class="kpi-value amarelo">${perfeitos}</div><div class="kpi-sub">${total?((perfeitos/total)*100).toFixed(0):0}% dos atendimentos</div></div>
+    <div class="kpi-card vermelho"><div class="kpi-label">< 60% — Desvio Crítico</div><div class="kpi-value vermelho">${baixos}</div><div class="kpi-sub">${total?((baixos/total)*100).toFixed(0):0}% dos atendimentos</div></div>
+    <div class="kpi-card"><div class="kpi-label">Atendentes Avaliados</div><div class="kpi-value">${atend}</div><div class="kpi-sub">na seleção atual</div></div>
+  `;
+
+  // GRÁFICO MENSAL
+  const mesesMap = {};
+  data.forEach(d => {
+    if (!mesesMap[d.mes]) mesesMap[d.mes] = { sum:0, cnt:0, label:d.mesLabel };
+    mesesMap[d.mes].sum += d.pct;
+    mesesMap[d.mes].cnt++;
+  });
+  const mesesList = Object.entries(mesesMap).sort((a,b)=>a[0].localeCompare(b[0]));
+  const maxMedia = mesesList.length ? Math.max(...mesesList.map(([,v])=>v.sum/v.cnt)) : 100;
+
+  document.getElementById('r-mesList').innerHTML = mesesList.length ? mesesList.map(([key, val]) => {
+    const m = val.sum / val.cnt;
+    const h = Math.max(4, (m/100)*80);
+    const c = barColor(m);
+    return `<div class="mes-col">
+      <div class="mes-bar-wrap" style="height:80px">
+        <div class="mes-bar-fill" style="height:${h}px;background:${c}">
+          <span class="mes-val" style="color:${c}">${m.toFixed(0)}%</span>
+        </div>
+      </div>
+      <div class="mes-name">${val.label}</div>
+    </div>`;
+  }).join('') : '<p style="font-size:12px;color:var(--subtexto);padding:20px">Sem dados para o período selecionado.</p>';
+
+  // PRODUTOS
+  const prodMap = {};
+  data.forEach(d => {
+    if (!prodMap[d.produto]) prodMap[d.produto] = {sum:0,cnt:0};
+    prodMap[d.produto].sum += d.pct;
+    prodMap[d.produto].cnt++;
+  });
+
+  document.getElementById('r-produtos').innerHTML = Object.entries(prodMap).sort((a,b)=>(b[1].sum/b[1].cnt)-(a[1].sum/a[1].cnt)).map(([nome, val]) => {
+    const m = val.sum/val.cnt;
+    const c = pctColor(m);
+    return `<div class="product-card">
+      <div class="product-name">${nome}</div>
+      <div class="product-pct" style="color:${c}">${m.toFixed(1)}%</div>
+      <div class="product-count">${val.cnt} atend.</div>
+    </div>`;
+  }).join('');
+
+  // ETAPAS CHART
+  const etapaData = ETAPAS.map(e => {
+    const med = data.length ? data.reduce((s,d)=>s+d[e.key],0)/data.length : 0;
+    const pct = e.max>0 ? (med/e.max)*100 : 0;
+    return { ...e, med, pct };
+  }).sort((a,b) => a.pct - b.pct);
+
+  document.getElementById('r-etapas').innerHTML = etapaData.map(e => {
+    const c = barColor(e.pct);
+    const tag = e.pct < 60 ? `<span class="tag-desvio">⚠ desvio</span>` : e.pct < 85 ? `<span class="tag-alerta">↓ parcial</span>` : '';
+    return `<div class="bar-row">
+      <div class="bar-label" title="${e.nome}">${e.nome.split(' ').slice(0,2).join(' ')}${tag}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${Math.min(100,e.pct).toFixed(0)}%;background:${c}">${e.med.toFixed(1)}</div>
+      </div>
+      <div class="bar-val" style="color:${c}">${e.pct.toFixed(0)}%</div>
+    </div>`;
+  }).join('');
+
+  // ATENDENTES CHART
+  const atendMap = {};
+  data.forEach(d => {
+    if (!atendMap[d.nome]) atendMap[d.nome] = {sum:0,cnt:0};
+    atendMap[d.nome].sum += d.pct;
+    atendMap[d.nome].cnt++;
+  });
+  const atendList = Object.entries(atendMap).sort((a,b)=>(b[1].sum/b[1].cnt)-(a[1].sum/a[1].cnt));
+
+  document.getElementById('r-atendentes').innerHTML = atendList.map(([nome, val]) => {
+    const m = val.sum/val.cnt;
+    const c = barColor(m);
+    return `<div class="bar-row">
+      <div class="bar-label">${nome.split(' ')[0]}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${m.toFixed(0)}%;background:${c}">${val.cnt} atend.</div>
+      </div>
+      <div class="bar-val" style="color:${c}">${m.toFixed(1)}%</div>
+    </div>`;
+  }).join('');
+
+  // TABELA ETAPAS
+  const tbody = document.getElementById('r-etapaTable');
+  tbody.innerHTML = ETAPAS.map((e, i) => {
+    const med = data.length ? data.reduce((s,d)=>s+d[e.key],0)/data.length : 0;
+    const pct = e.max>0 ? (med/e.max)*100 : 0;
+    const cls = pctCls(pct);
+    const desvCount = data.filter(d => e.max>0 && (d[e.key]/e.max)*100 < 60).length;
+    const status = pct<60 ? `<span style="color:var(--vermelho);font-weight:700">⚠ Desvio Crítico</span>` :
+                   pct<85 ? `<span style="color:#9A8A00;font-weight:700">↓ Atenção</span>` :
+                            `<span style="color:var(--verde-mid);font-weight:700">✓ OK</span>`;
+    return `<tr>
+      <td style="color:var(--subtexto);font-size:11px">${i+1}</td>
+      <td style="font-weight:600">${e.nome}</td>
+      <td style="font-size:11px;color:var(--subtexto)">${e.grupo}</td>
+      <td style="text-align:center"><span class="pct-badge ok">${e.max} pts</span></td>
+      <td><span class="pct-badge ${cls}">${med.toFixed(1)} pts</span></td>
+      <td><span class="pct-badge ${cls}">${pct.toFixed(0)}%</span></td>
+      <td style="text-align:center;font-weight:600;color:${desvCount>0?'var(--vermelho)':'var(--subtexto)'}">${desvCount}</td>
+      <td>${status}</td>
+    </tr>`;
+  }).join('');
+
+  // LEGENDA
+  document.getElementById('r-legenda').innerHTML = ETAPAS.map((e,i) => `
+    <div class="legend-item">
+      <div class="legend-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="legend-info">
+        <div class="legend-grupo">${e.grupo}</div>
+        <div class="legend-nome">${e.nome}</div>
+      </div>
+      <div class="legend-pts">${e.max}pts</div>
+    </div>`).join('');
+}
+
+// ── RENDER DETALHADO ──────────────────────────
+function renderDetalhado() {
+  const data = filteredData('d');
+  const nomes = [...new Set(data.map(d=>d.nome))].sort();
+  const grid  = document.getElementById('d-agentCards');
+  grid.innerHTML = '';
+
+  if (!nomes.length) {
+    grid.innerHTML = '<p style="color:var(--subtexto);font-size:13px;padding:20px">Nenhum dado para o filtro selecionado.</p>';
+    return;
+  }
+
+  const grupos = {};
+  ETAPAS.forEach(e => { if(!grupos[e.grupo]) grupos[e.grupo]=[]; grupos[e.grupo].push(e); });
+
+  nomes.forEach(nome => {
+    const regs = data.filter(d=>d.nome===nome);
+    const media = regs.reduce((s,d)=>s+d.pct,0)/regs.length;
+    const cls   = agentCls(media);
+    const produtos = [...new Set(regs.map(d=>d.produto))].join(', ');
+
+    const medEtapas = {};
+    ETAPAS.forEach(e => { medEtapas[e.key] = regs.reduce((s,d)=>s+d[e.key],0)/regs.length; });
+
+    let etapasHTML = '';
+    Object.entries(grupos).forEach(([grp, etapas]) => {
+      const rows = etapas.map(e => {
+        const m    = medEtapas[e.key];
+        const pctE = e.max>0 ? (m/e.max)*100 : 0;
+        const c    = barColor(pctE);
+        const tag  = pctE<60 ? `<span class="tag-desvio">⚠</span>` : pctE<85 ? `<span class="tag-alerta">↓</span>` : '';
+        return `<div class="etapa-item">
+          <span class="etapa-nome">${e.nome}${tag}</span>
+          <div class="etapa-track"><div class="etapa-fill" style="width:${Math.min(100,pctE).toFixed(0)}%;background:${c}"></div></div>
+          <span class="etapa-val" style="color:${c}">${m.toFixed(1)}/${e.max}</span>
+        </div>`;
+      }).join('');
+      etapasHTML += `<div class="etapa-section-label">${grp}</div>${rows}`;
+    });
+
+    const card = document.createElement('div');
+    card.className = 'agent-card';
+    card.innerHTML = `
+      <div class="agent-header-bg ${cls}">
+        <div class="agent-av">${initials(nome)}</div>
+        <div class="agent-name-wrap">
+          <div class="agent-name">${nome}</div>
+          <div class="agent-meta">${regs.length} atendimentos · ${produtos}</div>
+        </div>
+        <div class="agent-score">${media.toFixed(1)}%</div>
+      </div>
+      <div class="agent-body">${etapasHTML}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+
+// ── PAGE NAV ──────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (id === 'resumo') renderResumo();
+  if (id === 'detalhado') renderDetalhado();
+}
+
+// ── INIT ──────────────────────────────────────
+const d = new Date();
+document.getElementById('lastUpdate').textContent =
+  `Atualizado em ${d.toLocaleDateString('pt-BR')} ${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+
+populateSelects();
+renderResumo();
+</script>
+</body>
+</html>
