@@ -829,24 +829,15 @@ footer {
   </div>
   </div>
   <div class="nav-tabs">
-    <button class="tab-btn active" data-tab="resumo-executivo">
-    Resumo Executivo
-</button>
-    <div class="nav-tab active" onclick="showPage('resumo')">📊 Visão Geral</div>
+    <div class="nav-tab active" onclick="showPage('resumo')">📌 Resumo Executivo</div>
+    <div class="nav-tab" onclick="showPage('resumo')">📊 Visão Geral</div>
     <div class="nav-tab" onclick="showPage('detalhado')">👥 Por Atendente</div>
   </div>
 </header>
 <!-- ═══════════════════ PAGE 1 — RESUMO EXECUTIVO ═══════════════════ -->
-<div class="page active" id="page-resumo-executivo">
+<div class="page" id="page-resumo-executivo">
     <main class="dashboard">
-        <div class="topbar">
-            <div class="logo-wrap">
-                <div>
-                    <div class="section-title" style="margin-bottom: 6px;">Resumo Executivo</div>
-                    <div class="subtexto">Área de Qualidade — consolidação por produto</div>
-                </div>
-            </div>
-        </div>
+        <div class="section-title">Resumo Executivo — Área de Qualidade</div>
 
         <!-- KPIs -->
         <div class="kpi-grid" id="e-kpis">
